@@ -60,21 +60,21 @@ class CPUMonitor():
 
         # CPU stats
         self._info_stat = DiagnosticStatus()
-        self._info_stat.name = '%s CPU Info' % diag_hostname
+        self._info_stat.name = 'CPU Info'
         self._info_stat.level = DiagnosticStatus.WARN
         self._info_stat.hardware_id = hostname
         self._info_stat.message = 'No Data'
         self._info_stat.values = []
 
         self._usage_stat = DiagnosticStatus()
-        self._usage_stat.name = '%s CPU Usage' % diag_hostname
+        self._usage_stat.name = 'CPU Usage'
         self._usage_stat.level = DiagnosticStatus.WARN
         self._usage_stat.hardware_id = hostname
         self._usage_stat.message = 'No Data'
         self._usage_stat.values = []
 
         self._memory_stat = DiagnosticStatus()
-        self._memory_stat.name = '%s Memory Usage' % diag_hostname
+        self._memory_stat.name = 'Memory Usage'
         self._memory_stat.level = DiagnosticStatus.WARN
         self._memory_stat.hardware_id = hostname
         self._memory_stat.message = 'No Data'
@@ -381,11 +381,11 @@ class CPUMonitor():
 
             diag_vals.append(KeyValue(key = 'Load Average Status', value = load_dict[diag_level]))
             diag_vals.append(KeyValue(key = '1 min Load Average', value = load1))
-            diag_vals.append(KeyValue(key = '1 min Load Average Threshold', value = str(self._load1_threshold)))
-            diag_vals.append(KeyValue(key = '5 min Load Average', value = load5))
-            diag_vals.append(KeyValue(key = '5 min Load Average Threshold', value = str(self._load5_threshold)))
-            diag_vals.append(KeyValue(key = '15 min Load Average', value = load15))
-            diag_vals.append(KeyValue(key = 'Number of Users', value = num_users))
+            # diag_vals.append(KeyValue(key = '1 min Load Average Threshold', value = str(self._load1_threshold)))
+            # diag_vals.append(KeyValue(key = '5 min Load Average', value = load5))
+            # diag_vals.append(KeyValue(key = '5 min Load Average Threshold', value = str(self._load5_threshold)))
+            # diag_vals.append(KeyValue(key = '15 min Load Average', value = load15))
+            # diag_vals.append(KeyValue(key = 'Number of Users', value = num_users))
 
             diag_msg = load_dict[diag_level]
 
@@ -439,13 +439,13 @@ class CPUMonitor():
             if float(free_mem) < self._mem_error:
                 diag_level = DiagnosticStatus.ERROR
 
-            diag_vals.append(KeyValue(key = 'Mem Status', value = mem_dict[diag_level]))
+            #diag_vals.append(KeyValue(key = 'Mem Status', value = mem_dict[diag_level]))
             diag_vals.append(KeyValue(key = 'Mem Total', value = total_mem))
             diag_vals.append(KeyValue(key = 'Mem Used', value = used_mem))
-            diag_vals.append(KeyValue(key = 'Mem Free', value = free_mem))
-            diag_vals.append(KeyValue(key = 'Mem Shared', value = shared_mem))
-            diag_vals.append(KeyValue(key = 'Mem Buff/Cache', value = cache_mem))
-            diag_vals.append(KeyValue(key = 'Mem Available', value = available_mem))
+            #diag_vals.append(KeyValue(key = 'Mem Free', value = free_mem))
+            #diag_vals.append(KeyValue(key = 'Mem Shared', value = shared_mem))
+            #diag_vals.append(KeyValue(key = 'Mem Buff/Cache', value = cache_mem))
+            #diag_vals.append(KeyValue(key = 'Mem Available', value = available_mem))
 
             # Swap
             data = rows[2].split()
@@ -453,9 +453,9 @@ class CPUMonitor():
             used_mem = data[2]
             free_mem = data[3]
 
-            diag_vals.append(KeyValue(key = 'Swap Total', value = total_mem))
-            diag_vals.append(KeyValue(key = 'Swap Used', value = used_mem))
-            diag_vals.append(KeyValue(key = 'Swap Free', value = free_mem))
+#            diag_vals.append(KeyValue(key = 'Swap Total', value = total_mem))
+#            diag_vals.append(KeyValue(key = 'Swap Used', value = used_mem))
+#            diag_vals.append(KeyValue(key = 'Swap Free', value = free_mem))
 
             diag_msg = mem_dict[diag_level]
 
@@ -530,11 +530,11 @@ class CPUMonitor():
                 if usage > self._core_load_error:
                     core_level = DiagnosticStatus.ERROR
 
-                diag_vals.append(KeyValue(key = 'CPU %s Status' % cpu_name, value = load_dict[core_level]))
-                diag_vals.append(KeyValue(key = 'CPU %s User' % cpu_name, value = user))
-                diag_vals.append(KeyValue(key = 'CPU %s Nice' % cpu_name, value = nice))
-                diag_vals.append(KeyValue(key = 'CPU %s System' % cpu_name, value = system))
-                diag_vals.append(KeyValue(key = 'CPU %s Idle' % cpu_name, value = idle))
+                #diag_vals.append(KeyValue(key = 'CPU %s Status' % cpu_name, value = load_dict[core_level]))
+                #diag_vals.append(KeyValue(key = 'CPU %s User' % cpu_name, value = user))
+                #diag_vals.append(KeyValue(key = 'CPU %s Nice' % cpu_name, value = nice))
+                #diag_vals.append(KeyValue(key = 'CPU %s System' % cpu_name, value = system))
+                #diag_vals.append(KeyValue(key = 'CPU %s Idle' % cpu_name, value = idle))
 
                 num_cores += 1
 
@@ -817,7 +817,7 @@ class CPUMonitor():
     def publish_stats(self, event):
         msg = DiagnosticArray()
         msg.header.stamp = rospy.get_rostime()
-        msg.status.append(self._info_stat)
+        #msg.status.append(self._info_stat)
         msg.status.append(self._usage_stat)
         msg.status.append(self._memory_stat)
         self._diag_pub.publish(msg)
@@ -835,7 +835,7 @@ if __name__ == '__main__':
     options, args = parser.parse_args(rospy.myargv())
 
     try:
-        rospy.init_node('cpu_monitor_%s' % hostname)
+        rospy.init_node('cpu_monitor_node')
     except rospy.exceptions.ROSInitException:
         print('CPU monitor is unable to initialize node. Master may not be running.')
         sys.exit(0)
